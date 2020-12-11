@@ -1,0 +1,3 @@
+Pokemons location: if a given pokemon is on edge between a -> b and b -> a (a < b)
+if pokemon type == 1 then a -> b
+if pokemon type == -1 then b -> a
