@@ -16,7 +16,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
-public class BestGame implements Runnable{
+public class BestGame implements Runnable {
     private static MyFrame _win;
     private static Arena _ar;
 
@@ -42,21 +42,21 @@ public class BestGame implements Runnable{
 
 
         game.startGame();
-        _win.setTitle("Ex2 - OOP: (NONE trivial Solution) "+game.toString());
-        int ind=0;
-        long dt=100;
+        _win.setTitle("Ex2 - OOP: (NONE trivial Solution) " + game.toString());
+        int ind = 0;
+        long dt = 100;
 
-        while(game.isRunning()) {
+        while (game.isRunning()) {
             moveAgents(game, algo);
 
 
             try {
-                if(ind%1==0) {
-                    _win.repaint();}
+                if (ind % 1 == 0) {
+                    _win.repaint();
+                }
                 Thread.sleep(dt);
                 ind++;
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -65,14 +65,16 @@ public class BestGame implements Runnable{
         System.out.println(res);
         System.exit(0);
     }
+
     /**
      * Moves each of the agents along the edge,
      * in case the agent is on a node the next destination (next edge) is chosen (randomly).
+     *
      * @param game
      * @param algo
      * @param
      */
-    private  void moveAgents(game_service game, dw_graph_algorithms algo) {
+    private void moveAgents(game_service game, dw_graph_algorithms algo) {
         String lg = game.move();//this and 2 down for updating the movement
         java.util.List<CL_Agent> log = Arena.getAgents(lg, game.getJava_Graph_Not_to_be_used());
         _ar.setAgents(log);
@@ -82,17 +84,17 @@ public class BestGame implements Runnable{
 
         _ar.setPokemons(ffs);
         List<CL_Pokemon> pokemons = Arena.json2Pokemons(fs);
-        for (CL_Pokemon pok : pokemons){
-            Arena.updateEdge(pok,algo.getGraph());//update the pokemon edge from null
+        for (CL_Pokemon pok : pokemons) {
+            Arena.updateEdge(pok, algo.getGraph());//update the pokemon edge from null
 //
         }
 
-            String pokeJs = game.getPokemons();
-        for (CL_Agent agent : log){
-            Stack<CL_Pokemon> pokemons1 = ofir(pokemons,agent,algo);
-            while (!pokemons1.isEmpty()){
+        String pokeJs = game.getPokemons();
+        for (CL_Agent agent : log) {
+            Stack<CL_Pokemon> pokemons1 = ofir(pokemons, agent, algo);
+            while (!pokemons1.isEmpty()) {
                 CL_Pokemon pokemon = pokemons1.pop();
-                Arena.updateEdge(pokemon,algo.getGraph());//update the pokemon edge from null
+                Arena.updateEdge(pokemon, algo.getGraph());//update the pokemon edge from null
 
                 CL_Agent ag = agent;
                 int dest = ag.getNextNode();
@@ -101,8 +103,8 @@ public class BestGame implements Runnable{
                 double v = ag.getValue();
                 int lastStep = FindSrc(pokemon);/////////////////////////////////////
                 // add the fonc of the short way
-                ofir(pokemons,ag,algo);
-                LinkedList<node_data> pathToPokemon = (LinkedList) algo.shortestPath(src,lastStep);
+                //   ofir(pokemons,ag,algo);
+                LinkedList<node_data> pathToPokemon = (LinkedList) algo.shortestPath(src, lastStep);
                 pathToPokemon.removeFirst();
                 for (node_data n : pathToPokemon) {
                     String lgg = game.move();
@@ -113,8 +115,8 @@ public class BestGame implements Runnable{
                         game.chooseNextEdge(id, dest);
                     }
                 }
-                if(src == lastStep){
-                    game.chooseNextEdge(id,FindDest(pokemon));
+                if (src == lastStep) {
+                    game.chooseNextEdge(id, FindDest(pokemon));
                     String lgg = game.move();
                     java.util.List<CL_Agent> logg = Arena.getAgents(lgg, game.getJava_Graph_Not_to_be_used());
                     _ar.setAgents(logg);
@@ -124,32 +126,34 @@ public class BestGame implements Runnable{
 
 
     }
-    public static int FindSrc(CL_Pokemon pokemon){//Find src of the edge to catch a desired pokemon
-        if(pokemon.getType() == -1){
-            return  Integer.max(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
+
+    public static int FindSrc(CL_Pokemon pokemon) {//Find src of the edge to catch a desired pokemon
+        if (pokemon.getType() == -1) {
+            return Integer.max(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
         }
-        if(pokemon.getType() == 1){
+        if (pokemon.getType() == 1) {
             return Integer.min(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
         }
         return -1;
     }
-    public int FindDest(CL_Pokemon pokemon){//Find dest of the edge to catch a desired pokemon
-        if(pokemon.getType() == -1){
-            return  Integer.min(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
+
+    public int FindDest(CL_Pokemon pokemon) {//Find dest of the edge to catch a desired pokemon
+        if (pokemon.getType() == -1) {
+            return Integer.min(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
         }
-        if(pokemon.getType() == 1){
+        if (pokemon.getType() == 1) {
             return Integer.max(pokemon.get_edge().getSrc(), pokemon.get_edge().getDest());
         }
         return -1;
     }
 
-    public void moveAgent(CL_Agent agent,int dest,game_service game){
+    public void moveAgent(CL_Agent agent, int dest, game_service game) {
         String lg = game.move();
         java.util.List<CL_Agent> log = Arena.getAgents(lg, game.getJava_Graph_Not_to_be_used());
         _ar.setAgents(log);
         int currDest = agent.getNextNode();
-        if(currDest == -1){
-            game.chooseNextEdge(agent.getID(),dest);
+        if (currDest == -1) {
+            game.chooseNextEdge(agent.getID(), dest);
         }
 
     }
@@ -184,8 +188,10 @@ public class BestGame implements Runnable{
         }
         System.out.println(game.getAgents());
     }
+
     /**
      * a very simple random walk implementation!
+     *
      * @param g
      * @param src
      * @return
@@ -195,12 +201,16 @@ public class BestGame implements Runnable{
         Collection<edge_data> ee = g.getE(src);
         Iterator<edge_data> itr = ee.iterator();
         int s = ee.size();
-        int r = (int)(Math.random()*s);
-        int i=0;
-        while(i<r) {itr.next();i++;}
+        int r = (int) (Math.random() * s);
+        int i = 0;
+        while (i < r) {
+            itr.next();
+            i++;
+        }
         ans = itr.next().getDest();
         return ans;
     }
+
     private void init(game_service game) {
         String g = game.getGraph();
         String fs = game.getPokemons();
@@ -223,69 +233,83 @@ public class BestGame implements Runnable{
 
             getLead(game);
 
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        catch (JSONException e) {e.printStackTrace();}
     }
-    public static Stack<CL_Pokemon> ofir(List<CL_Pokemon> po,CL_Agent agent, dw_graph_algorithms algo){
-        Stack<CL_Pokemon> PPokemon= new Stack();
 
-        double min=Integer.MAX_VALUE;
+    public static Stack<CL_Pokemon> ofir(List<CL_Pokemon> po, CL_Agent agent, dw_graph_algorithms algo) {
+        Stack<CL_Pokemon> PPokemon = new Stack();
+
+        double min = Integer.MAX_VALUE;
         double check;
-        boolean flag= false;
+        boolean flag = false;
         // give the nearest pokemon to the agent
-        for (CL_Pokemon n:po) {
-            check=algo.shortestPathDist(agent.getSrcNode(),n.get_edge().getSrc())+(n.get_edge().getWeight());
-            if(check<min && flag==false){
-                min=check;
+        for (CL_Pokemon n : po) {
+            check = algo.shortestPathDist(agent.getSrcNode(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
+            if (check < min && flag == false) {
+                min = check;
                 PPokemon.push(n);
-                flag=true;
+                flag = true;
             }
-            if(check<min && flag == true){
-                min=check;
+            if (check < min && flag == true) {
+                min = check;
                 PPokemon.pop();
                 PPokemon.push(n);
             }
         }
-        flag= false;
-        if(!PPokemon.isEmpty())       po.remove(PPokemon.peek());
+        flag = false;
+        if (!PPokemon.isEmpty()) po.remove(PPokemon.peek());
 
 
-
-       // צריך למהשיך לסגור את העניין של הסדר פוקימונים+ חישוב נקודת התחלה וחיבור מעבר על
+        // צריך למהשיך לסגור את העניין של הסדר פוקימונים+ חישוב נקודת התחלה וחיבור מעבר על
         // make a stack of the shortest way to catch the pokemons
-       while(!po.isEmpty()) {
-           CL_Pokemon pokemon_check =PPokemon.peek();
-            for (CL_Pokemon n:po) {
+        while (!po.isEmpty()) {
+            CL_Pokemon pokemon_check = PPokemon.peek();
+            for (CL_Pokemon n : po) {
                 // חישוב של מהקודקוד הסופי עד הקודקוד ההתחלתי +מעבר על הצלע של הפוקימון
-                check=algo.shortestPathDist(pokemon_check.get_edge().getDest(), n.get_edge().getSrc())+(n.get_edge().getWeight());
-               // if is the first adding
-                if(check<min && flag== false){
-                    min=check;
+                check = algo.shortestPathDist(pokemon_check.get_edge().getDest(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
+                // if is the first adding
+                if (check < min && flag == false) {
+                    min = check;
                     PPokemon.push(n);
-                    flag=true;
+                    flag = true;
                 }
                 // if is not the first adding, delit the pokemon and add the shortest one (עדכון הפוקימון עם הדרך הקצרה ביותר)
-                if(check<min && flag == true){
-                    min=check;
+                if (check < min && flag == true) {
+                    min = check;
                     PPokemon.pop();
                     PPokemon.push(n);
                 }
             }
-            flag=false;
-            min=Integer.MAX_VALUE;
-           po.remove(PPokemon.peek());
+            flag = false;
+            min = Integer.MAX_VALUE;
+            po.remove(PPokemon.peek());
         }
-       //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
+        //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
         //
         //יובל פה אני חושב שכדי להסתכל על סוגי מבני הנתונים ולהחליט מה כדי לנו כי זה לא יעיל להפוך ושוב לה5פוך וכו...
         //
-        Stack<CL_Pokemon> PPokemon_rotin= new Stack(); // for rotin the pokemon from the end to the first
+        Stack<CL_Pokemon> PPokemon_rotin = new Stack(); // for rotin the pokemon from the end to the first
         while (!PPokemon.isEmpty()) {
             PPokemon_rotin.push(PPokemon.pop());
         }
+        return PPokemon_rotin;
+    }
 
 
+    public static HashMap<Integer, HashMap<Integer, List<node_data>>> poke_hack(dw_graph_algorithms algo) {
 
-        return PPokemon_rotin ;
+        HashMap<Integer, HashMap<Integer, List<node_data>>> src = new HashMap<>();
+        for (node_data n : algo.getGraph().getV()) {
+            HashMap<Integer, List<node_data>> path = new HashMap<>();
+            for (node_data d : algo.getGraph().getV()) {
+                path.put(d.getKey(),algo.shortestPath(n.getKey(), d.getKey()));
+                src.put(n.getKey(),path);
+            }
+
+        }
+
+        return src;
     }
 }
