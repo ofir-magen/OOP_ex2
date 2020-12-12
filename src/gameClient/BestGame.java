@@ -29,9 +29,9 @@ public class BestGame implements Runnable{
     @Override
     public void run() {
 
-        int scenario_num = 18;
+        int scenario_num = 3;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-        int id = 0;
+        int id = 80085;
         game.login(id);
         Stack<CL_Pokemon> pokemonContainer = new Stack();
 
@@ -80,43 +80,48 @@ public class BestGame implements Runnable{
         String fs = game.getPokemons();
         List<CL_Pokemon> ffs = Arena.json2Pokemons(fs); // give the Pokemons to list
 
-
         _ar.setPokemons(ffs);
         List<CL_Pokemon> pokemons = Arena.json2Pokemons(fs);
-        String pokeJs = game.getPokemons();
-        System.out.println(log);
-        for (CL_Pokemon pokemon: pokemons){
-            Arena.updateEdge(pokemon,algo.getGraph());//update the pokemon edge from null
+        for (CL_Pokemon pok : pokemons){
+            Arena.updateEdge(pok,algo.getGraph());//update the pokemon edge from null
+//
+        }
 
-            CL_Agent ag = log.get(0);
-            int dest = ag.getNextNode();
-            int id = ag.getID();
-            int src = ag.getSrcNode();
-            double v = ag.getValue();
-            int lastStep = FindSrc(pokemon);/////////////////////////////////////
-            // add the fonc of the short way
-            ofir(pokemons,ag,algo);
-            LinkedList<node_data> pathToPokemon = (LinkedList) algo.shortestPath(src,lastStep);
-            pathToPokemon.removeFirst();
-            for (node_data n : pathToPokemon) {
-                String lgg = game.move();
-                java.util.List<CL_Agent> logg = Arena.getAgents(lgg, game.getJava_Graph_Not_to_be_used());
-                _ar.setAgents(logg);
-                if (dest == -1) {
-                    dest = n.getKey();
-                    game.chooseNextEdge(id, dest);
+            String pokeJs = game.getPokemons();
+        for (CL_Agent agent : log){
+            Stack<CL_Pokemon> pokemons1 = ofir(pokemons,agent,algo);
+            while (!pokemons1.isEmpty()){
+                CL_Pokemon pokemon = pokemons1.pop();
+                Arena.updateEdge(pokemon,algo.getGraph());//update the pokemon edge from null
+
+                CL_Agent ag = agent;
+                int dest = ag.getNextNode();
+                int id = ag.getID();
+                int src = ag.getSrcNode();
+                double v = ag.getValue();
+                int lastStep = FindSrc(pokemon);/////////////////////////////////////
+                // add the fonc of the short way
+                ofir(pokemons,ag,algo);
+                LinkedList<node_data> pathToPokemon = (LinkedList) algo.shortestPath(src,lastStep);
+                pathToPokemon.removeFirst();
+                for (node_data n : pathToPokemon) {
+                    String lgg = game.move();
+                    java.util.List<CL_Agent> logg = Arena.getAgents(lgg, game.getJava_Graph_Not_to_be_used());
+                    _ar.setAgents(logg);
+                    if (dest == -1) {
+                        dest = n.getKey();
+                        game.chooseNextEdge(id, dest);
+                    }
+                }
+                if(src == lastStep){
+                    game.chooseNextEdge(id,FindDest(pokemon));
+                    String lgg = game.move();
+                    java.util.List<CL_Agent> logg = Arena.getAgents(lgg, game.getJava_Graph_Not_to_be_used());
+                    _ar.setAgents(logg);
                 }
             }
-            if(src == lastStep){
-                game.chooseNextEdge(id,FindDest(pokemon));
-                String lgg = game.move();
-                java.util.List<CL_Agent> logg = Arena.getAgents(lgg, game.getJava_Graph_Not_to_be_used());
-                _ar.setAgents(logg);
-            }
-
-
-
         }
+
 
     }
     public static int FindSrc(CL_Pokemon pokemon){//Find src of the edge to catch a desired pokemon
@@ -220,9 +225,6 @@ public class BestGame implements Runnable{
 
         }
         catch (JSONException e) {e.printStackTrace();}
-
-
-
     }
     public static Stack<CL_Pokemon> ofir(List<CL_Pokemon> po,CL_Agent agent, dw_graph_algorithms algo){
         Stack<CL_Pokemon> PPokemon= new Stack();
@@ -245,7 +247,9 @@ public class BestGame implements Runnable{
             }
         }
         flag= false;
-       po.remove(PPokemon.peek());
+        if(!PPokemon.isEmpty())       po.remove(PPokemon.peek());
+
+
 
        // צריך למהשיך לסגור את העניין של הסדר פוקימונים+ חישוב נקודת התחלה וחיבור מעבר על
         // make a stack of the shortest way to catch the pokemons
@@ -273,12 +277,14 @@ public class BestGame implements Runnable{
         }
        //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
         //
-        //יובל פה אני חושב שכדי להסתכל על סוגי מבני הנתונים ולהחליט מה כדי לנו כי זה לא יעיל להפוך ושוב להפוך וכו...
+        //יובל פה אני חושב שכדי להסתכל על סוגי מבני הנתונים ולהחליט מה כדי לנו כי זה לא יעיל להפוך ושוב לה5פוך וכו...
         //
         Stack<CL_Pokemon> PPokemon_rotin= new Stack(); // for rotin the pokemon from the end to the first
-        for (CL_Pokemon n:PPokemon) {
+        while (!PPokemon.isEmpty()) {
             PPokemon_rotin.push(PPokemon.pop());
         }
+
+
 
         return PPokemon_rotin ;
     }
