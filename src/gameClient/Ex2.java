@@ -32,10 +32,9 @@ public class Ex2  implements ActionListener,Runnable {
 
 
     public static void main(String[] args) {
-        new BestGame();
-//        Thread t1 = new Thread(new Ex2());
-//
-//        t1.run();
+  //      new BestGame();
+        Thread t1 = new Thread(new Ex2());
+        t1.run();
 //        Thread t2 = new Thread(new MyFrame("F"));
 //        t2.run();
     }
@@ -133,7 +132,8 @@ public class Ex2  implements ActionListener,Runnable {
      */
     @Override
     public void run() {
-        Thread client = new Thread(new Ex2_Client());
+
+        Thread client = new Thread(new Ex2());
         client.start();
        // game_service game = Game_Server_Ex2.getServer(23); // you have [0,23] games
 
