@@ -6,7 +6,6 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import scala.Int;
-//import scala.util.parsing.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
@@ -23,6 +22,7 @@ public class BestGame implements Runnable {
     HashMap<Integer,HashMap<Integer,Double>> distmap;
     HashMap<Integer, HashMap<Integer, List<node_data>>> listmap;
     LinkedList<CL_Pokemon> targets;
+
     public static void main(String[] args) {
 
         Thread t = new Thread(new BestGame());
