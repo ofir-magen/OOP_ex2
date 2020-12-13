@@ -32,7 +32,7 @@ public class BestGame implements Runnable {
     @Override
     public void run() {
 
-        int scenario_num = 3;
+        int scenario_num = 11;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         int id = 80085;
         game.login(id);
@@ -328,7 +328,7 @@ public class BestGame implements Runnable {
     public  Stack<CL_Pokemon> ofir(List<CL_Pokemon> po, CL_Agent agent, dw_graph_algorithms algo) {
         Stack<CL_Pokemon> PPokemon = new Stack();
 
-        double min = Integer.MAX_VALUE;
+        double min = Integer.MIN_VALUE;
         double check;
         boolean flag = false;
         // give the nearest pokemon to the agent
@@ -337,12 +337,12 @@ public class BestGame implements Runnable {
            // check = algo.shortestPathDist(agent.getSrcNode(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
             check = this.distmap.get(agent.getSrcNode()).get(FindSrc(n)) + (n.get_edge().getWeight());
             check =  n.getValue()/check;
-            if (check < min && flag == false) {
+            if (check > min && flag == false) {
                 min = check;
                 PPokemon.push(n);
                 flag = true;
             }
-            if (check < min && flag == true) {
+            if (check > min && flag == true) {
                 min = check;
                 PPokemon.pop();
                 PPokemon.push(n);
@@ -362,20 +362,20 @@ public class BestGame implements Runnable {
                check = this.distmap.get(pokemon_check.get_edge().getDest()).get(FindSrc(n)) + (n.get_edge().getWeight());
                check =  n.getValue()/check;
                 // if is the first adding
-                if (check < min && flag == false) {
+                if (check > min && flag == false) {
                     min = check;
                     PPokemon.push(n);
                     flag = true;
                 }
                 // if is not the first adding, delit the pokemon and add the shortest one (עדכון הפוקימון עם הדרך הקצרה ביותר)
-                if (check < min && flag == true) {
+                if (check > min && flag == true) {
                     min = check;
                     PPokemon.pop();
                     PPokemon.push(n);
                 }
             }
             flag = false;
-            min = Integer.MAX_VALUE;
+            min = Integer.MIN_VALUE;
             po.remove(PPokemon.peek());
         }
         //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
