@@ -6,6 +6,7 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import scala.Int;
+//import scala.util.parsing.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
@@ -22,7 +23,6 @@ public class BestGame implements Runnable {
     HashMap<Integer,HashMap<Integer,Double>> distmap;
     HashMap<Integer, HashMap<Integer, List<node_data>>> listmap;
     LinkedList<CL_Pokemon> targets;
-
     public static void main(String[] args) {
 
         Thread t = new Thread(new BestGame());
@@ -32,7 +32,7 @@ public class BestGame implements Runnable {
     @Override
     public void run() {
 
-        int scenario_num = 7;
+        int scenario_num = 101;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         int id = 313612152;
         game.login(id);
@@ -98,7 +98,7 @@ public class BestGame implements Runnable {
     private void moveAgents(game_service game, dw_graph_algorithms algo) {
         //Agent src:5 dest:-1
         //choosenextedge(Agent.ID,6);
-          //Agent: src:5  dest:6 J
+          //Agent: src:5  dest:6
         String lg = game.move();//this and 2 down for updating the movement
         //Agent src:6 dest:-1
         List<CL_Agent> log = Arena.getAgents(lg, algo.getGraph());

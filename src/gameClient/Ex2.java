@@ -16,10 +16,10 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.text.NumberFormatter;
 
-public class Ex2  implements ActionListener,Runnable {
+    public class Ex2  implements ActionListener,Runnable {
 
-    int count = 0;
-    MyFrame frame = new MyFrame("My Game");
+        int count = 0;
+        MyFrame frame = new MyFrame("My Game");
     JPanel panel = new JPanel();
     // JLabel label = new JLabel("Number of clicks: "+ count);
     JPanel panel2 = new JPanel();
@@ -100,8 +100,8 @@ public class Ex2  implements ActionListener,Runnable {
             //frame.setContentPane(panel2);
             frame.setSize(1000,700);
             frame.setVisible(false);
-            Thread client = new Thread(new Ex2_Client());
-            client.start();
+//            Thread client = new Thread(new Ex2_Client());
+//            client.start();
 
 
 //            dw_graph_algorithms algo = new DWGraph_Algo();
