@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.text.NumberFormatter;
 
     public class Ex2  implements ActionListener,Runnable {
-
+//
         int count = 0;
         MyFrame frame = new MyFrame("My Game");
     JPanel panel = new JPanel();
