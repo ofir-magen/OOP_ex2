@@ -32,7 +32,7 @@ public class BestGame implements Runnable {
     @Override
     public void run() {
 
-        int scenario_num = 101;
+        int scenario_num = 23;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         int id = 313612152;
         game.login(id);
