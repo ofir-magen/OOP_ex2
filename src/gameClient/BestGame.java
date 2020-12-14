@@ -6,7 +6,6 @@ import api.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import scala.Int;
-//import scala.util.parsing.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;
@@ -32,7 +31,7 @@ public class BestGame implements Runnable {
     @Override
     public void run() {
 
-        int scenario_num = 11;
+        int scenario_num = 3;
         game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
         int id = 80085;
         game.login(id);
