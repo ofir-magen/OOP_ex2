@@ -258,7 +258,6 @@ public class BestGame   {
     }
 
 
-    //   [ 4 | 9 ]
     public static void getLead(game_service game) {
         String pokeJson = game.getPokemons();
         List<CL_Pokemon> pokemons = Arena.json2Pokemons(pokeJson);
@@ -366,12 +365,10 @@ public class BestGame   {
         if (!PPokemon.isEmpty()) po.remove(PPokemon.peek());
 
 
-        // צריך למהשיך לסגור את העניין של הסדר פוקימונים+ חישוב נקודת התחלה וחיבור מעבר על
         // make a stack of the shortest way to catch the pokemons
         while (!po.isEmpty()) {
             CL_Pokemon pokemon_check = PPokemon.peek();
             for (CL_Pokemon n : po) {
-                // חישוב של מהקודקוד הסופי עד הקודקוד ההתחלתי +מעבר על הצלע של הפוקימון
                 //   check = algo.shortestPathDist(pokemon_check.get_edge().getDest(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
                 check = this.distmap.get(pokemon_check.get_edge().getDest()).get(FindSrc(n)) + (n.get_edge().getWeight());
                 check =  n.getValue()/check;
@@ -381,7 +378,6 @@ public class BestGame   {
                     PPokemon.push(n);
                     flag = true;
                 }
-                // if is not the first adding, delit the pokemon and add the shortest one (עדכון הפוקימון עם הדרך הקצרה ביותר)
                 if (check > min && flag == true) {
                     min = check;
                     PPokemon.pop();
@@ -392,9 +388,6 @@ public class BestGame   {
             min = Integer.MIN_VALUE;
             po.remove(PPokemon.peek());
         }
-        //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
-        //
-        //יובל פה אני חושב שכדי להסתכל על סוגי מבני הנתונים ולהחליט מה כדי לנו כי זה לא יעיל להפוך ושוב לה5פוך וכו...
         //
         Stack<CL_Pokemon> PPokemon_rotin = new Stack(); // for rotin the pokemon from the end to the first
         while (!PPokemon.isEmpty()) {

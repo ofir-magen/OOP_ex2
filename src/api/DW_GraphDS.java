@@ -21,7 +21,6 @@ public class DW_GraphDS implements directed_weighted_graph {
    }
     /**
      * returns the node_data by the node_id,
-     *
      * @param key - the node_id
      * @return the node_data by the node_id, null if none.
      */
@@ -33,10 +32,9 @@ public class DW_GraphDS implements directed_weighted_graph {
 
     /**
      * returns the data of the edge (src,dest), null if none.
-     * Note: this method should run in O(1) time.
      * @param src
      * @param dest
-     * @return
+     * @return the edge_data of the edge (src -> dest)
      */
     @Override
     public edge_data getEdge(int src, int dest) {
@@ -48,8 +46,6 @@ public class DW_GraphDS implements directed_weighted_graph {
 
     /**
      * adds a new node to the graph with the given node_data.
-     * Note: this method should run in O(1) time.
-     *
      * @param n
      */
     @Override
@@ -58,14 +54,11 @@ public class DW_GraphDS implements directed_weighted_graph {
             Vertices.put(n.getKey(), n);
             ExitEdges.put(n.getKey(), new HashMap<Integer, edge_data>());
             EntryEdges.put(n.getKey(), new HashSet<Integer>());
-
+            MC++;
         }
     }
-
     /**
-     * Connects an edge with weight w between node src to node dest.
-     * * Note: this method should run in O(1) time.
-     *
+     * Connects an edge with weight w between node src to node dest.*
      * @param src  - the source of the edge.
      * @param dest - the destination of the edge.
      * @param w    - positive weight representing the cost (aka time, price, etc) between src-->dest.
@@ -76,15 +69,14 @@ public class DW_GraphDS implements directed_weighted_graph {
             if(!ExitEdges.get(src).containsKey(dest)) {Edgesize++;}
                 ExitEdges.get(src).put(dest, new EdgeData(src, dest, w));
                 EntryEdges.get(dest).add(src);
+                MC++;
         }
     }
 
     /**
      * This method returns a pointer (shallow copy) for the
      * collection representing all the nodes in the graph.
-     * Note: this method should run in O(1) time.
-     *kk
-     * @return Collection<node_data>
+     * @return Collection<node_data> - containing the node_data of every node in the graph
      */
     @Override
     public Collection<node_data> getV() {
@@ -95,10 +87,8 @@ public class DW_GraphDS implements directed_weighted_graph {
      * This method returns a pointer (shallow copy) for the
      * collection representing all the ExitEdges getting out of
      * the given node (all the ExitEdges starting (source) at the given node).
-     * Note: this method should run in O(k) time, k being the collection size.
-     *
      * @param node_id
-     * @return Collection<edge_data>
+     * @return Collection<edge_data> - containing all the edges starting node_id as their src
      */
     @Override
     public Collection<edge_data> getE(int node_id) {
@@ -109,14 +99,11 @@ public class DW_GraphDS implements directed_weighted_graph {
            }
         }
         return EdgeCollection;
-      //  return this.ExitEdges.get(node_id).values();
     }
 
     /**
      * Deletes the node (with the given ID) from the graph -
      * and removes all ExitEdges which starts or ends at this node.
-     * This method should run in O(k), V.degree=k, as all the ExitEdges should be removed.
-     *
      * @param key
      * @return the data of the removed node (null if none).
      */
@@ -136,9 +123,7 @@ public class DW_GraphDS implements directed_weighted_graph {
 
 
     /**
-     * Deletes the edge from the graph,
-     * Note: this method should run in O(1) time.
-     *
+     * Deletes the edge from the graph
      * @param src
      * @param dest
      * @return the data of the removed edge (null if none).
@@ -156,10 +141,8 @@ public class DW_GraphDS implements directed_weighted_graph {
     }
 
     /**
-     * Returns the number of vertices (nodes) in the graph.
-     * Note: this method should run in O(1) time.
-     *
-     * @return
+     * Returns the number of vertices (nodes) in the graph.*
+     * @return the number (int) of the nodes in the graph
      */
     @Override
     public int nodeSize() {
@@ -167,10 +150,8 @@ public class DW_GraphDS implements directed_weighted_graph {
     }
 
     /**
-     * Returns the number of ExitEdges (assume directional graph).
-     * Note: this method should run in O(1) time.
-     *
-     * @return
+     * Returns the number of ExitEdges (assume directional graph).*
+     * @return the number (int) of the edges in the graph
      */
     @Override
     public int edgeSize() {
@@ -179,14 +160,14 @@ public class DW_GraphDS implements directed_weighted_graph {
 
     /**
      * Returns the Mode Count - for testing changes in the graph.
-     *
-     * @return
+     * @return number of changes that this graph has been threw
      */
     @Override
     public int getMC() {
         return MC;
     }
-    public boolean HasEdge(int src,int dest){
+    //Private method that returns true if theres an edge between src -> dest and false otherwise
+    private boolean HasEdge(int src,int dest){
         return Vertices.containsKey(src)&&
          Vertices.containsKey(dest)&&
          ExitEdges.containsKey(src)&&
@@ -207,8 +188,7 @@ public class DW_GraphDS implements directed_weighted_graph {
         }
         /**
          * The id of the source node of this edge.
-         *
-         * @return
+         * @return the key (int) of the src node
          */
         @Override
         public int getSrc() {
@@ -217,14 +197,12 @@ public class DW_GraphDS implements directed_weighted_graph {
 
         /**
          * The id of the destination node of this edge
-         *
-         * @return
+         * @return the key (int) of the dest  node
          */
         @Override
         public int getDest() {
             return dest;
         }
-
         /**
          * @return the weight of this edge (positive value).
          */
@@ -232,20 +210,16 @@ public class DW_GraphDS implements directed_weighted_graph {
         public double getWeight() {
             return this.weight;
         }
-
         /**
          * Returns the remark (meta data) associated with this edge.
-         *
-         * @return
+         * @return the info (String) of this edge
          */
         @Override
         public String getInfo() {
             return this.info;
         }
-
         /**
          * Allows changing the remark (meta data) associated with this edge.
-         *
          * @param s
          */
         @Override
@@ -256,8 +230,7 @@ public class DW_GraphDS implements directed_weighted_graph {
         /**
          * Temporal data (aka color: e,g, white, gray, black)
          * which can be used be algorithms
-         *
-         * @return
+         * @return the tag (int) of the node
          */
         @Override
         public int getTag() {
@@ -282,7 +255,7 @@ public class DW_GraphDS implements directed_weighted_graph {
         /**
          * Returns the edge on which the location is.
          *
-         * @return
+         * @return the edge_data of the edge
          */
         @Override
         public edge_data getEdge() {
@@ -292,7 +265,7 @@ public class DW_GraphDS implements directed_weighted_graph {
         /**
          * Returns the relative ration [0,1] of the location between src and dest.
          *
-         * @return
+         * @return ????
          */
         @Override
         public double getRatio() {
