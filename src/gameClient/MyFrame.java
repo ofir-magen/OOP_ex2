@@ -22,6 +22,8 @@ public class MyFrame extends JFrame implements Runnable{
 	private int _ind;
 	private Arena _ar;
 	private gameClient.util.Range2Range _w2f;
+	double time;
+
 	MyFrame(String a) {
 		super(a);
 		int _ind = 0;
@@ -50,6 +52,8 @@ public class MyFrame extends JFrame implements Runnable{
 		drawGraph(g);
 		drawAgants(g);
 		drawInfo(g);
+		System.out.println(_ar.time/1000);
+		g.drawString("Time to end: "+_ar.time+" sec", 10, 10);
 	}
 	private void drawInfo(Graphics g) {
 		List<String> str = _ar.get_info();
