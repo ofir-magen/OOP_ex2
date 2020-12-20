@@ -106,7 +106,7 @@ public class BestGame implements ActionListener,Runnable {
             this.id = Integer.parseInt(username.getText());
             this.scenario = Integer.parseInt(scenarioBox.getText());
             this.bol = true;
-
+//....
 //        test();
 //            BestGame game = new BestGame();
 //            game.UpdateData(Integer.parseInt(scenarioBox.getText()),Integer.parseInt(username.getText()));
