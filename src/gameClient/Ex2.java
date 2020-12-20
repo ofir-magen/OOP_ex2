@@ -2,9 +2,13 @@ package gameClient;
 
 import Server.Game_Server_Ex2;
 import api.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import gameClient.util.Point3D;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+//import com.google.gson.JsonParser;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
@@ -18,6 +22,7 @@ public class Ex2 {
     LinkedList<CL_Pokemon> targets;
     private static int  scenario;
     private static int id;
+    private static directed_weighted_graph g;
 
     public static void main(String[] args) {
 //
@@ -45,7 +50,7 @@ public class Ex2 {
         game.login(this.id);
         //Stack<CL_Pokemon> pokemonContainer = new Stack();
 
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
+        directed_weighted_graph gg = Json2Graph(game.getGraph());
         dw_graph_algorithms algo = new DWGraph_Algo();
         algo.init(gg);
         init(game);
@@ -80,6 +85,7 @@ public class Ex2 {
 
             try {
                 if (ind % 1 == 0) {
+                    _ar.agents = Arena.getAgents(game.getAgents(),Json2Graph(game.getGraph()));
                     _ar.time = game.timeToEnd();
                     _win.update(_ar);
 
@@ -245,7 +251,7 @@ public class Ex2 {
 
     public void moveAgent(CL_Agent agent, int dest, game_service game) {
         String lg = game.move();
-        java.util.List<CL_Agent> log = Arena.getAgents(lg, game.getJava_Graph_Not_to_be_used());
+        java.util.List<CL_Agent> log = Arena.getAgents(lg, Json2Graph(game.getGraph()));
         _ar.setAgents(log);
         int currDest = agent.getNextNode();
         if (currDest == -1) {
@@ -255,12 +261,12 @@ public class Ex2 {
     }
 
 
-    public static void getLead(game_service game) {
+    public  void getLead(game_service game) {
         String pokeJson = game.getPokemons();
         List<CL_Pokemon> pokemons = Arena.json2Pokemons(pokeJson);
         HashMap<Integer, Integer> startAhead = new HashMap<Integer, Integer>();
 
-        directed_weighted_graph graph = game.getJava_Graph_Not_to_be_used();
+        directed_weighted_graph graph = Json2Graph(game.getGraph());
 
         for (CL_Pokemon pokemon : pokemons) {
             Arena.updateEdge(pokemon, graph);
@@ -309,7 +315,7 @@ public class Ex2 {
     private void init(game_service game) {
         String g = game.getGraph();
         String fs = game.getPokemons();
-        directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
+        directed_weighted_graph gg = Json2Graph(game.getGraph());
 
         _ar = new Arena();
         _ar.setGraph(gg);
@@ -420,18 +426,28 @@ public class Ex2 {
         System.out.println("id: "+this.id + " and scenario is: "+this.scenario);
         run();
 
-    }private JLabel drawtimer() {
-        JLabel timelabel = new JLabel();
-        int elapsedtime = 0;
-        int milseconds = 0;
-        int seconds = 0;
-        String seconds_string = String.format("%02d", milseconds);
-        String milseconds_string = String.format("%02d", seconds);
-
-        timelabel.setText(milseconds_string + ":" + seconds_string);
-        timelabel.setBounds(100, 100, 200, 100);
-        timelabel.setFont(new Font("Verdana", Font.PLAIN, 35));
-        timelabel.setHorizontalAlignment(JTextField.CENTER);
-            return timelabel;
+    }
+    private directed_weighted_graph Json2Graph(String s){
+        directed_weighted_graph graph = new DW_GraphDS();
+        JsonObject js = (JsonObject) new JsonParser().parse(s);
+        for (JsonElement jsonedNode : js.getAsJsonArray("Nodes")) {
+            int id = ((JsonObject) jsonedNode).get("id").getAsInt();
+            node_data node = new NodeData(id);
+            graph.addNode(node);
+            String posString = ((JsonObject) jsonedNode).get("pos").getAsString();
+            String[] locations = posString.split(",");
+            double x = Double.parseDouble(locations[0]);
+            double y = Double.parseDouble(locations[1]);
+            double z = Double.parseDouble(locations[2]);
+            geo_location pos = new Point3D(x, y, z);
+            node.setLocation(pos);
+        }
+        for (JsonElement jsonedEdge : js.getAsJsonArray("Edges")) {
+            int src = ((JsonObject) jsonedEdge).get("src").getAsInt();
+            double w = ((JsonObject) jsonedEdge).get("w").getAsDouble();
+            int dest = ((JsonObject) jsonedEdge).get("dest").getAsInt();
+            graph.connect(src, dest, w);
+        }
+        return graph;
     }
 }

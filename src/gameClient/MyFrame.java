@@ -54,6 +54,22 @@ public class MyFrame extends JFrame implements Runnable{
 		drawInfo(g);
 		System.out.println(_ar.time/1000);
 		g.drawString("Time to end: "+_ar.time/1000+" sec", 100, 100);
+		g.drawString(MakeAgentsString(_ar.agents),80,80);
+	}
+	private String MakeAgentsString(List<CL_Agent> agents){
+		String MyAgentString = "";
+		int i =0;
+		for (CL_Agent agento : agents){
+			if(i == 0) {
+				MyAgentString += "Agent" + agento.getID() + " value: " + agento.getValue();
+			}
+			else{
+				MyAgentString += " , Agent" + agento.getID() + " value: " + agento.getValue();
+
+			}
+			i++;
+		}
+		return  MyAgentString;
 	}
 	private void drawInfo(Graphics g) {
 		List<String> str = _ar.get_info();
