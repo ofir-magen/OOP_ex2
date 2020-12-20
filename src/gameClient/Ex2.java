@@ -136,12 +136,7 @@ public class Ex2 {
             game.chooseNextEdge(agent.getID(),FindDest(pokemon));
             targets.remove(pokemon);
             agent.set_curr_fruit(null);
-//            String lg = game.move();//this and 2 down for updating the movement
-//            //Agent src:6 dest:-1
-//            List<CL_Agent> log = Arena.getAgents(lg, game.getJava_Graph_Not_to_be_used());
-//            _ar.setAgents(log);
         }
-//        game.move();
     }
     public static int FindSrc(CL_Pokemon pokemon) {//Find src of the edge to catch a desired pokemon
         if (pokemon.getType() == -1) {
