@@ -194,7 +194,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
                 }
                 json.add("Edges",jsonEdges);
                 json.add("Nodes",jsonNodes);
-//                System.out.println(json);
                myWriter.write(g.toJson(json));
                myWriter.close();
             } else {
@@ -221,7 +220,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     @Override
     public boolean load(String file) {
         try {
-            Gson g = new Gson();
             directed_weighted_graph g1 = new DW_GraphDS();
             JsonObject json = new JsonParser().parse(new FileReader(file)).getAsJsonObject(); //read file as JsonObject
             JsonArray edges = json.getAsJsonArray("Edges");

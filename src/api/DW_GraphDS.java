@@ -109,7 +109,6 @@ public class DW_GraphDS implements directed_weighted_graph {
            }
         }
         return EdgeCollection;
-      //  return this.ExitEdges.get(node_id).values();
     }
 
     /**

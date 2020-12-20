@@ -2,8 +2,7 @@ package gameClient;
 import javax.swing.*;
 
 
-import Server.Game_Server_Ex2;
-import api.game_service;
+
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,13 +11,10 @@ import java.text.NumberFormat;
 import javax.swing.JFrame;
 import javax.swing.text.NumberFormatter;
 
-public class BestGame implements ActionListener,Runnable {
+public class BestGame implements ActionListener {
 
-    int count = 0;
     JFrame frame = new JFrame("My Game");
     JPanel panel = new JPanel();
-    // JLabel label = new JLabel("Number of clicks: "+ count);
-    JPanel panel2 = new JPanel();
     JTextField username = new JTextField("");
     JFormattedTextField scenarioBox = new JFormattedTextField("");
     JLabel wrongId = new JLabel("invalid id");
@@ -31,22 +27,7 @@ public class BestGame implements ActionListener,Runnable {
 
 
     public static void main(String[] args) {
-        //      new BestGame();
-//        Thread t1 = new Thread(new Ex2());
-//        t1.run();
         new BestGame();
-//test();
-//        Thread t2 = new Thread(new MyFrame("F"));
-//        t2.run();
-    }
-//    public Ex2(){
-//        menu();
-//    }
-    public int getID(){
-        return this.id;
-    }
-    public int getScenario(){
-        return this.scenario;
     }
     void menu(){
         JButton button = new JButton("Start game");
@@ -58,7 +39,7 @@ public class BestGame implements ActionListener,Runnable {
         frame.pack();
         frame.setVisible(true);
     }
-    public JPanel LoginPanel(){
+    public JPanel LoginPanel(){ // make a login panel
         wrongId.setForeground(Color.red);
         wrongId.setVisible(false);
         wrongScenario.setForeground(Color.red);
@@ -97,48 +78,13 @@ public class BestGame implements ActionListener,Runnable {
                 isValid = false;
             }
         }
-//        if(Integer.parseInt(scenarioBox.getText()) >= 24 || Integer.parseInt(scenarioBox.getText()) < 0){
-//            wrongScenario.setVisible(true);
-//            isValid = false;
-//        }
+
+
         if (isValid) {//scenrioBox and username is the Fields
 
             this.id = Integer.parseInt(username.getText());
             this.scenario = Integer.parseInt(scenarioBox.getText());
             this.bol = true;
-//....
-//        test();
-//            BestGame game = new BestGame();
-//            game.UpdateData(Integer.parseInt(scenarioBox.getText()),Integer.parseInt(username.getText()));
-//            game.run();
-           // frame.dispatchEvent(new WindowEvent(frame,WindowEvent.WINDOW_CLOSING));
-         //   frame.setVisible(false);
-           // frame.dispose();
-
-//            Thread t1 = new Thread(new BestGame());
-//            t1.start();
-
-            //count++;
-            //frame.setContentPane(panel2);
-//            Thread t = new Thread(new BestGame());
-//            t.start();
-//            frame.setSize(1000,700);
-//            frame.setVisible(true);
-//            Thread client = new Thread(new Ex2_Client());
-//            client.start();
-
-
-//            dw_graph_algorithms algo = new DWGraph_Algo();
-//            algo.load("/Users/yuval/Downloads/Ariel_OOP_2020-master/Assignments/Ex2/data/A5");
-//            Arena ar = new Arena();
-//            ar.setGraph(algo.getGraph());
-//            ar.setPokemons();
-//            MyFrame game = new MyFrame("Pokemon game");
-//
-//            frame.setVisible(false);
-//            frame = game;
-//            frame.setVisible(true);
-//            frame.validate();
         }
 
     }
@@ -154,14 +100,7 @@ public class BestGame implements ActionListener,Runnable {
      *
      * @see Thread#run()
      */
-    @Override
-    public void run() {
 
-      Thread client = new Thread(new BestGame());
-      client.start();
-   game_service game = Game_Server_Ex2.getServer(23); // you have [0,23] games
-
-    }
     public static void test(){
         Ex2 game = new Ex2();
         game.UpdateData(1,2);
