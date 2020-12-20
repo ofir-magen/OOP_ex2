@@ -28,9 +28,11 @@ public class tests_ofir {
         graph1.addNode(n0);
         graph1.addNode(n1);
         graph1.addNode(n2);
-        graph1.connect(0,1,5);
-        graph1.connect(1,2,5);
-        graph1.connect(2,0,5);
+        graph1.addNode(n3);
+        graph1.connect(0,1,1);
+        graph1.connect(1,2,3);
+        graph1.connect(2,3,5);
+        graph1.connect(3,0,200);
         dw_graph_algorithms g1= new DWGraph_Algo();
         g1.init(graph1);
 

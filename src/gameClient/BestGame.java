@@ -16,27 +16,40 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
-public class BestGame implements Runnable {
+public class BestGame   {
     private static MyFrame _win;
     private static Arena _ar;
     HashMap<Integer,HashMap<Integer,Double>> distmap;
     HashMap<Integer, HashMap<Integer, List<node_data>>> listmap;
     LinkedList<CL_Pokemon> targets;
+    private static int  scenario;
+    private static int id;
 
     public static void main(String[] args) {
+//
+            BestGame game = new BestGame();
+            game.LoginPanel();
 
-        Thread t = new Thread(new BestGame());
-        t.start();
+//       game.run();
+//        Thread t = new Thread(new BestGame());
+//        t.start();
     }
 
-    @Override
+    public void UpdateData(int scenario , int id ){
+        this.scenario = scenario;
+        System.out.println(scenario);
+        this.id = id;
+//        BestGame game = new BestGame();
+//        game.run();
+    }
+    // @Override
     public void run() {
 
-        int scenario_num = 7;
-        game_service game = Game_Server_Ex2.getServer(scenario_num); // you have [0,23] games
-        int id = 313612152;
-        game.login(id);
-        Stack<CL_Pokemon> pokemonContainer = new Stack();
+        // int scenario_num = 15;
+        game_service game = Game_Server_Ex2.getServer(this.scenario); // you have [0,23] games
+        //int id = 313612152;
+        game.login(this.id);
+        //Stack<CL_Pokemon> pokemonContainer = new Stack();
 
         directed_weighted_graph gg = game.getJava_Graph_Not_to_be_used();
         dw_graph_algorithms algo = new DWGraph_Algo();
@@ -98,7 +111,7 @@ public class BestGame implements Runnable {
     private void moveAgents(game_service game, dw_graph_algorithms algo) {
         //Agent src:5 dest:-1
         //choosenextedge(Agent.ID,6);
-          //Agent: src:5  dest:6 J
+        //Agent: src:5  dest:6 J
         String lg = game.move();//this and 2 down for updating the movement
         //Agent src:6 dest:-1
         List<CL_Agent> log = Arena.getAgents(lg, algo.getGraph());
@@ -114,29 +127,28 @@ public class BestGame implements Runnable {
             Arena.updateEdge(pokemon,algo.getGraph());
         }
         for (CL_Agent ag : log) {
-             fs = game.getPokemons();//json
-             ffs = Arena.json2Pokemons(fs); //
+            fs = game.getPokemons();//json
+            ffs = Arena.json2Pokemons(fs); //
 //            if(ag.getNextNode() == -1) {
-                Stack<CL_Pokemon> pokemons = ofir(ffs, ag, algo);
-                while(!pokemons.isEmpty()) {
-                    CL_Pokemon pikachu = pokemons.pop();
-                    ag.set_curr_fruit(pikachu);
-                    if (!targets.contains(pikachu)) {
+            Stack<CL_Pokemon> pokemons = ofir(ffs, ag, algo);
+            while(!pokemons.isEmpty()) {
+                CL_Pokemon pikachu = pokemons.pop();
+                ag.set_curr_fruit(pikachu);
+                if (!targets.contains(pikachu)) {
 //            System.out.println(pikachu.get_edge().getSrc());
 //            System.out.println(pikachu.get_edge().getDest());
-                        targets.add(pikachu);
-                        System.out.println(ag.get_curr_fruit().get_edge().getInfo());
-                        if(ag.get_curr_fruit() == null) {
-                            ag.set_curr_fruit(pikachu);
-                            NextNode(game, ag, algo, pikachu);
-                        }
-                        else{NextNode(game, ag, algo, ag.get_curr_fruit());}
-                        System.out.println("Agent: "+ag.getID()+", val: "+ag.getValue()+"   turned to node: "+ag.getNextNode());
-                        break;
+                    targets.add(pikachu);
+                    if(ag.get_curr_fruit() == null) {
+                        ag.set_curr_fruit(pikachu);
+                        NextNode(game, ag, algo, pikachu);
                     }
+                    else{NextNode(game, ag, algo, ag.get_curr_fruit());}
+                    //System.out.println("Agent: "+ag.getID()+", val: "+ag.getValue()+"   turned to node: "+ag.getNextNode());
+                    break;
                 }
+            }
 
-          //  }
+            //  }
         }
 
         //        for (int i = 0; i < 10; i++) {
@@ -246,7 +258,6 @@ public class BestGame implements Runnable {
     }
 
 
-    //   [ 4 | 9 ]
     public static void getLead(game_service game) {
         String pokeJson = game.getPokemons();
         List<CL_Pokemon> pokemons = Arena.json2Pokemons(pokeJson);
@@ -310,6 +321,8 @@ public class BestGame implements Runnable {
         _win.setSize(1000, 700);
         _win.update(_ar);
         _win.show();
+        _win.setVisible(true);
+        _win.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         String info = game.toString();
         JSONObject line;
         try {
@@ -334,7 +347,7 @@ public class BestGame implements Runnable {
         // give the nearest pokemon to the agent
         for (CL_Pokemon n : po) {
             Arena.updateEdge(n,algo.getGraph());
-           // check = algo.shortestPathDist(agent.getSrcNode(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
+            // check = algo.shortestPathDist(agent.getSrcNode(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
             check = this.distmap.get(agent.getSrcNode()).get(FindSrc(n)) + (n.get_edge().getWeight());
             check =  n.getValue()/check;
             if (check > min && flag == false) {
@@ -352,22 +365,19 @@ public class BestGame implements Runnable {
         if (!PPokemon.isEmpty()) po.remove(PPokemon.peek());
 
 
-        // צריך למהשיך לסגור את העניין של הסדר פוקימונים+ חישוב נקודת התחלה וחיבור מעבר על
         // make a stack of the shortest way to catch the pokemons
         while (!po.isEmpty()) {
             CL_Pokemon pokemon_check = PPokemon.peek();
             for (CL_Pokemon n : po) {
-                // חישוב של מהקודקוד הסופי עד הקודקוד ההתחלתי +מעבר על הצלע של הפוקימון
-             //   check = algo.shortestPathDist(pokemon_check.get_edge().getDest(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
-               check = this.distmap.get(pokemon_check.get_edge().getDest()).get(FindSrc(n)) + (n.get_edge().getWeight());
-               check =  n.getValue()/check;
+                //   check = algo.shortestPathDist(pokemon_check.get_edge().getDest(), n.get_edge().getSrc()) + (n.get_edge().getWeight());
+                check = this.distmap.get(pokemon_check.get_edge().getDest()).get(FindSrc(n)) + (n.get_edge().getWeight());
+                check =  n.getValue()/check;
                 // if is the first adding
                 if (check > min && flag == false) {
                     min = check;
                     PPokemon.push(n);
                     flag = true;
                 }
-                // if is not the first adding, delit the pokemon and add the shortest one (עדכון הפוקימון עם הדרך הקצרה ביותר)
                 if (check > min && flag == true) {
                     min = check;
                     PPokemon.pop();
@@ -378,9 +388,6 @@ public class BestGame implements Runnable {
             min = Integer.MIN_VALUE;
             po.remove(PPokemon.peek());
         }
-        //הופך ומכניס את הדרך בין כל אחד ואחד למחסנית לפי סדר מעבר על הפוקימונים
-        //
-        //יובל פה אני חושב שכדי להסתכל על סוגי מבני הנתונים ולהחליט מה כדי לנו כי זה לא יעיל להפוך ושוב לה5פוך וכו...
         //
         Stack<CL_Pokemon> PPokemon_rotin = new Stack(); // for rotin the pokemon from the end to the first
         while (!PPokemon.isEmpty()) {
@@ -405,5 +412,16 @@ public class BestGame implements Runnable {
         }
         this.distmap = distmap;
         this.listmap = listmap;
+    }
+    public  void LoginPanel(){
+        Ex2 login = new Ex2();
+        login.menu();
+        while(login.bol == false){
+            System.out.print("");
+        }
+        UpdateData(login.scenario,login.id);
+        System.out.println("id: "+this.id + " and scenario is: "+this.scenario);
+        run();
+
     }
 }

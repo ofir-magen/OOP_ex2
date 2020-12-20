@@ -1,6 +1,7 @@
 package api;
 
 import com.google.gson.*;
+import gameClient.util.Point3D;
 
 import java.io.*;
 import java.util.*;
@@ -14,7 +15,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
     /**
      * Init the graph on which this set of algorithms operates on.
-     *
      * @param g
      */
     @Override
@@ -24,8 +24,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * Return the underlying graph of which this class works.
-     *
-     * @return
+     * @return the graph (directed_weighted_graph) that this class performs algorithms on
      */
     @Override
     public directed_weighted_graph getGraph() {
@@ -34,8 +33,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * Compute a deep copy of this weighted graph.
-     *
-     * @return
+     * @return a deep copy of the graph (directed_weighted_graph) that this class performs algorithms on
      */
     @Override
     public directed_weighted_graph copy() {
@@ -57,9 +55,9 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * Returns true if and only if (iff) there is a valid path from each node to each
-     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * other node
      *
-     * @return
+     * @return true if there a path from each node , false if not
      */
     @Override
     public boolean isConnected() {
@@ -103,11 +101,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
     /**
      * returns the length of the shortest path between src to dest
-     * Note: if no such path --> returns -1
+     * if no such path --> returns -1
      *
      * @param src  - start node
      * @param dest - end (target) node
-     * @return
+     * @return the weight (double) distance from the src node to dest
      */
     @Override
     public double shortestPathDist(int src, int dest) {
@@ -140,12 +138,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * returns the the shortest path between src to dest - as an ordered List of nodes:
      * src--> n1-->n2-->...dest
-     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
-     * Note if no such path --> returns null;
-     *
+     * if no such path --> returns null;
      * @param src  - start node
      * @param dest - end (target) node
-     * @return
+     * @return list containing all the nodes in the shortest path (by weight) ordered from src to dest.
      */
     @Override
     public List<node_data> shortestPath(int src, int dest) {
@@ -170,7 +166,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     /**
      * Saves this weighted (directed) graph to the given
      * file name - in JSON format
-     *
      * @param file - the file name (may include a relative path).
      * @return true - iff the file was successfully saved
      */
@@ -220,7 +215,6 @@ public class DWGraph_Algo implements dw_graph_algorithms {
      * if the file was successfully loaded - the underlying graph
      * of this class will be changed (to the loaded one), in case the
      * graph was not loaded the original graph should remain "as is".
-     *
      * @param file - file name of JSON file
      * @return true - iff the graph was successfully loaded.
      */
@@ -235,7 +229,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
             System.out.println(json);
             for (JsonElement node: nodes){ //iterate to convert Json -> Nodes
                String[] pos = ((JsonObject) node).get("pos").getAsString().split(",");
-                geo_location location = new NodeData.GeoLocation(Double.parseDouble(pos[0]),Double.parseDouble(pos[1]),Double.parseDouble(pos[2]));
+                geo_location location = new Point3D(Double.parseDouble(pos[0]),Double.parseDouble(pos[1]),Double.parseDouble(pos[2]));
                 node_data NewNode = new NodeData(((JsonObject) node).get("id").getAsInt(),location);
                 g1.addNode(NewNode);
             }
@@ -253,7 +247,7 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     }
 
 
-
+    //a private method that resets all the nodes tag in the graph to a given a (int)
     private void reset(int a) {
         for (node_data v : this.graph.getV()) {
             v.setTag(a);

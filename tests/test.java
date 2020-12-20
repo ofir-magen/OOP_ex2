@@ -1,5 +1,4 @@
-package api;
-
+import api.*;
 import com.google.gson.Gson;
 
 import java.util.LinkedList;

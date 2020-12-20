@@ -16,10 +16,10 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 import javax.swing.text.NumberFormatter;
 
-    public class Ex2  implements ActionListener,Runnable {
+public class Ex2  implements ActionListener,Runnable {
 
-        int count = 0;
-        MyFrame frame = new MyFrame("My Game");
+    int count = 0;
+    JFrame frame = new JFrame("My Game");
     JPanel panel = new JPanel();
     // JLabel label = new JLabel("Number of clicks: "+ count);
     JPanel panel2 = new JPanel();
@@ -27,19 +27,30 @@ import javax.swing.text.NumberFormatter;
     JFormattedTextField scenarioBox = new JFormattedTextField("");
     JLabel wrongId = new JLabel("invalid id");
     JLabel wrongScenario = new JLabel("invalid scenario (0 - 23)");
+    public static int id;
+    public static int scenario;
+    boolean bol = false;
 
 
 
 
     public static void main(String[] args) {
-  //      new BestGame();
-        Thread t1 = new Thread(new Ex2());
-        t1.run();
+        //      new BestGame();
+//        Thread t1 = new Thread(new Ex2());
+//        t1.run();
+        new Ex2();
+//test();
 //        Thread t2 = new Thread(new MyFrame("F"));
 //        t2.run();
     }
-    public Ex2(){
-        menu();
+//    public Ex2(){
+//        menu();
+//    }
+    public int getID(){
+        return this.id;
+    }
+    public int getScenario(){
+        return this.scenario;
     }
     void menu(){
         JButton button = new JButton("Start game");
@@ -87,19 +98,36 @@ import javax.swing.text.NumberFormatter;
         for (int i = 0;i<username.getText().length();i++){
             if(username.getText().charAt(i) < 48 || username.getText().charAt(i) > 57){
                 wrongId.setVisible(true);
-                System.out.println("Wrong id");
                 isValid = false;
             }
         }
-        if(Integer.parseInt(scenarioBox.getText()) >= 24 || Integer.parseInt(scenarioBox.getText()) < 0){
-            wrongScenario.setVisible(true);
-            isValid = false;
-        }
-        if (isValid) {
+//        if(Integer.parseInt(scenarioBox.getText()) >= 24 || Integer.parseInt(scenarioBox.getText()) < 0){
+//            wrongScenario.setVisible(true);
+//            isValid = false;
+//        }
+        if (isValid) {//scenrioBox and username is the Fields
+
+            this.id = Integer.parseInt(username.getText());
+            this.scenario = Integer.parseInt(scenarioBox.getText());
+            this.bol = true;
+
+//        test();
+//            BestGame game = new BestGame();
+//            game.UpdateData(Integer.parseInt(scenarioBox.getText()),Integer.parseInt(username.getText()));
+//            game.run();
+           // frame.dispatchEvent(new WindowEvent(frame,WindowEvent.WINDOW_CLOSING));
+         //   frame.setVisible(false);
+           // frame.dispose();
+
+//            Thread t1 = new Thread(new BestGame());
+//            t1.start();
+
             //count++;
             //frame.setContentPane(panel2);
-            frame.setSize(1000,700);
-            frame.setVisible(false);
+//            Thread t = new Thread(new BestGame());
+//            t.start();
+//            frame.setSize(1000,700);
+//            frame.setVisible(true);
 //            Thread client = new Thread(new Ex2_Client());
 //            client.start();
 
@@ -133,9 +161,15 @@ import javax.swing.text.NumberFormatter;
     @Override
     public void run() {
 
-        Thread client = new Thread(new Ex2());
-        client.start();
-       // game_service game = Game_Server_Ex2.getServer(23); // you have [0,23] games
+      Thread client = new Thread(new Ex2());
+      client.start();
+   game_service game = Game_Server_Ex2.getServer(23); // you have [0,23] games
+
+    }
+    public static void test(){
+        BestGame game = new BestGame();
+        game.UpdateData(1,2);
+        game.run();
 
     }
 }

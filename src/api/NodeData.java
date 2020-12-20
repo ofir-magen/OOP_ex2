@@ -1,4 +1,6 @@
 package api;
+import gameClient.util.Point3D;
+
 import java.util.Locale;
 
 public class NodeData implements node_data {
@@ -9,7 +11,7 @@ public class NodeData implements node_data {
      geo_location location;
      public NodeData(int key){
          this.key = key;
-         this.location = new GeoLocation(0, 0, 0);
+         this.location = new Point3D(0, 0, 0);
      }
     public NodeData(int key , geo_location location){
         this.key = key;
@@ -17,12 +19,12 @@ public class NodeData implements node_data {
     }
     public NodeData(){
         this.key = id++;
-        this.location = new GeoLocation(0, 0, 0);
+        this.location = new Point3D(0, 0, 0);
     }
     /**
      * Returns the key (id) associated with this node.
      *
-     * @return
+     * @return key - the unique id of the node
      */
     @Override
     public int getKey() {
@@ -33,7 +35,7 @@ public class NodeData implements node_data {
      * Returns the location of this node, if
      * none return null.
      *
-     * @return
+     * @return geo_location - the (x,y,z) geometrical location of the node
      */
     @Override
     public geo_location getLocation() {
@@ -53,7 +55,7 @@ public class NodeData implements node_data {
     /**
      * Returns the weight associated with this node.
      *
-     * @return
+     * @return weight - the weight of the node
      */
     @Override
     public double getWeight() {
@@ -73,7 +75,7 @@ public class NodeData implements node_data {
     /**
      * Returns the remark (meta data) associated with this node.
      *
-     * @return
+     * @return info - the info of the node
      */
     @Override
     public String getInfo() {
@@ -81,8 +83,7 @@ public class NodeData implements node_data {
     }
 
     /**
-     * Allows changing the remark (meta data) associated with this node.
-     *
+     * Allows changing the remark (meta data) associated with this node
      * @param s
      */
     @Override
@@ -93,8 +94,7 @@ public class NodeData implements node_data {
     /**
      * Temporal data (aka color: e,g, white, gray, black)
      * which can be used be algorithms
-     *
-     * @return
+     * @return the new tag of the node
      */
     @Override
     public int getTag() {
@@ -110,33 +110,5 @@ public class NodeData implements node_data {
     @Override
     public void setTag(int t) {
     this.tag = t;
-    }
-    public static class GeoLocation implements geo_location{
-        double x,y,z;
-        public GeoLocation(double x,double y,double z){
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-        @Override
-        public double x() {
-            return x;
-        }
-
-        @Override
-        public double y() {
-            return y;
-        }
-
-        @Override
-        public double z() {
-            return z;
-        }
-
-        @Override
-        public double distance(geo_location g) {
-
-            return Math.sqrt(Math.pow((x-g.x()),2)+Math.pow((y-g.y()),2)+Math.pow((z-g.z()),2));
-        }
     }
 }
