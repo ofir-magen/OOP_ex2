@@ -53,7 +53,7 @@ public class MyFrame extends JFrame implements Runnable{
 		drawAgants(g);
 		drawInfo(g);
 		System.out.println(_ar.time/1000);
-		g.drawString("Time to end: "+_ar.time+" sec", 10, 10);
+		g.drawString("Time to end: "+_ar.time/1000+" sec", 100, 100);
 	}
 	private void drawInfo(Graphics g) {
 		List<String> str = _ar.get_info();
