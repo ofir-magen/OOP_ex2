@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class DWGraph_AlgoTest {
-    DWGraph_AlgoTest() {
-    }
+
 
     @Test
     void Test0() {
